@@ -63,14 +63,68 @@ class TestServerFunctionality(unittest.TestCase):
         self.assertEqual(retrieved["tstUsr"], "password")
         self.assertTrue("tstUsr2" not in retrieved)
 
+        self.clearFileHelper("db_sim.pickle") #clear db file
 
+    def test_addToEmptyCookieSet(self):
 
+        self.clearFileHelper("cookie_sim.pickle")
+        cookieJar: set[str] = set(["cookie1"]) #cookie jar will be set of cookies
 
+        pick = open("cookie_sim.pickle", "wb")
+        pickle.dump(cookieJar, pick)
+        pick.close()
 
+        pick_off = open("cookie_sim.pickle", "rb")
+        cJar = pickle.load(pick_off)
+        pick_off.close()
+
+        self.assertTrue("cookie1" in cJar)
+
+    def test_addToFilledCookieSet(self):
+
+        pick_off = open("cookie_sim.pickle", "rb")
+        cJar = pickle.load(pick_off)
+        pick_off.close()
+
+        cJar.add("cookie2")
+
+        pick = open("cookie_sim.pickle", "wb")
+        pickle.dump(cJar, pick)
+        pick.close()
+
+        pick_off = open("cookie_sim.pickle", "rb")
+        cJar = pickle.load(pick_off)
+        pick_off.close()
+
+        self.assertTrue("cookie1" in cJar)
+        self.assertTrue("cookie2" in cJar)
+
+    def test_deleteFromCookieSet(self):
+
+        pick_off = open("cookie_sim.pickle", "rb")
+        cJar = pickle.load(pick_off)
+        pick_off.close()
+
+        self.assertTrue("cookie2" in cJar)
+        cJar.remove("cookie2")
+
+        pick = open("cookie_sim.pickle", "wb")
+        pickle.dump(cJar, pick)
+        pick.close()
+
+        pick_off = open("cookie_sim.pickle", "rb")
+        cJar = pickle.load(pick_off)
+        pick_off.close()
+
+        self.assertTrue("cookie1" in cJar)
+        self.assertTrue("cookie2" not in cJar)
+
+        self.clearFileHelper("cookie_sim.pickle") #clear cookie file
 
 
 
 if __name__ == '__main__':
     unittest.main()
+
 
 
