@@ -1,9 +1,9 @@
 from flask import Flask, redirect, url_for, request, render_template, session
-import hashlib
+import os
 import pickle
 
 app = Flask(__name__)
-app.secret_key = "5A^Qq9aC$5N*" #needed for signing session token
+app.secret_key = os.urandom(12) #needed for signing session token
 
 @app.route('/')
 def index():
