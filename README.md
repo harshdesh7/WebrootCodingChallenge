@@ -13,6 +13,7 @@
         - do `pip install flask` and `pip install pickle`
 * Running Main Program:
     - `python3 server.py`
+    - The program should be running on `localhost:5000`
 * Running Test Suite:
     - `python3 tests.py`
 
