@@ -1,7 +1,15 @@
 import unittest
 import pickle
 
+#below will be mock client
+from server import app
+
 class TestServerFunctionality(unittest.TestCase):
+
+    def setUp(self) -> None:
+        #making mock flask client
+        self.mock = app.test_client()
+        self.mock.testing = True
 
     def clearFileHelper(self, file_sim):
         open(file_sim, 'wb').close()
@@ -121,7 +129,18 @@ class TestServerFunctionality(unittest.TestCase):
 
         self.clearFileHelper("cookie_sim.pickle") #clear cookie file
 
+    def test_canHitMainPage(self):
 
+        response = self.mock.get("/")
+
+        #default page redirects to login, so code should be 302
+        self.assertEqual(response.status_code, 302)
+
+    def testCanHitRegisterPage(self):
+
+        response = self.mock.get("/register")
+
+        self.assertEqual(response.status_code, 200)
 
 if __name__ == '__main__':
     unittest.main()
